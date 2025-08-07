@@ -2,11 +2,13 @@
 
 namespace App\Core;
 
+use Ramsey\Uuid\UuidInterface;
+
 interface ModelInterface
 {
-    public function find($id);
-    public function findAll();
-    public function create(array $data);
-    public function update($id, array $data);
-    public function delete($id);
+    public function all(): array;
+    public function find(UuidInterface $id): ?array;
+    public function create(array $data): bool;
+    public function update(UuidInterface $id, array $data): bool;
+    public function delete(UuidInterface $id): bool;
 }

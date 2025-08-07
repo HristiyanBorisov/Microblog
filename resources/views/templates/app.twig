@@ -5,12 +5,15 @@
         <meta charset="UTF-8">
         <title>Microblog</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="{{ base_url() }}/css/app.css">
     </head>
 
     <body>
         {% include 'templates/partials/navigation.twig' %}
 
         <div class="container">
+            {% include 'templates/partials/flash.twig' %}
             {% block content %}{% endblock %}
         </div>
 
