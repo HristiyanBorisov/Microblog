@@ -4,9 +4,9 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Log In</div>
+                <div class="card-header">Register</div>
                 <div class="card-body">
-                    <form action="{{ path_for('auth.login.submit') }}" method="post">
+                    <form action="{{ path_for('auth.register.submit') }}" method="post">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input
@@ -34,7 +34,7 @@
                                 <span class="help-block text-danger">{{ errors.password | first }}</span>
                             {% endif %}
                         </div>
-                        <button type="submit" class="btn btn-primary">Log In</button>
+                        <button type="submit" class="btn btn-primary">Register</button>
 
                         {{ csrf.field | raw }}
                     </form>
