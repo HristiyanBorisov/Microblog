@@ -1,4 +1,7 @@
-CREATE TABLE users (
+CREATE SCHEMA IF NOT EXISTS microblog;
+CREATE SCHEMA IF NOT EXISTS microblog_test;
+
+CREATE TABLE IF NOT EXISTS microblog.users (
     id CHAR(36) PRIMARY KEY,
     username VARCHAR(25) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -6,7 +9,15 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS microblog_test.users (
+                                               id CHAR(36) PRIMARY KEY,
+    username VARCHAR(25) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS microblog.posts (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content TEXT,
@@ -14,3 +25,12 @@ CREATE TABLE posts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESAMP
 );
+
+CREATE TABLE IF NOT EXISTS microblog_test.posts (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    image_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESAMP
+    );

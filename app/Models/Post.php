@@ -26,7 +26,7 @@ class Post implements ModelInterface
     {
         $stmt = $this->db->prepare('SELECT * FROM posts WHERE id = :id');
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
     public function create(array $data): bool
@@ -39,7 +39,7 @@ class Post implements ModelInterface
             'id' => Uuid::uuid4()->toString(),
             ':title' => $data['title'],
             ':content' => $data['content'],
-            ':image_path' => $data['image_path'],
+            ':image_path' => $data['image_path'] ?? null,
         ]);
     }
 
