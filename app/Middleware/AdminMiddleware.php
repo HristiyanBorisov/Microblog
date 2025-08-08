@@ -12,7 +12,7 @@ class AdminMiddleware extends Middleware
 
         if (!$user['admin']) {
             $this->container->flash->addMessage('info', 'Only admins can access this page.');
-            return $response->withRedirect($this->container->router->pathFor(''));
+            return $response->withRedirect($this->container->router->pathFor('public.index'));
         }
 
         return $next($request, $response);
