@@ -1,0 +1,52 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Create Post</div>
+                <div class="card-body">
+                    <form action="{{ path_for('admin.post.create') }}" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input
+                                    type="text"
+                                    name="title"
+                                    id="title"
+                                    placeholder="Title"
+                                    class="form-control"
+                                    value="{{ old.title }}"
+                            >
+                            {% if errors.title %}
+                                <span class="help-block text-danger">{{ errors.title | first }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea
+                                name="content"
+                                placeholder="Content"
+                                class="form-control"
+                            >{{ old.content }}</textarea>
+                            {% if errors.content %}
+                                <span class="help-block text-danger">{{ errors.content | first }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label><br>
+                            <input type="file" id="image" name="image">
+                            {% if errors.image %}
+                                <br>
+                                <span class="help-block text-danger">{{ errors.image | first }}</span>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Create Post</button>
+
+                        {{ csrf.field | raw }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

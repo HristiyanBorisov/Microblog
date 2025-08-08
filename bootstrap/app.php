@@ -1,6 +1,9 @@
 <?php
 
+use App\Controllers\AdminController;
+use App\Middleware\HttpMethodOverrideMiddleware;
 use App\Services\AuthService;
+use App\Services\ImageUploadService;
 use App\Validation\Rules\AvailableUsername;
 use Slim\App;
 use App\Validation\Validator;
@@ -33,6 +36,10 @@ require_once __DIR__ . '/../app/Database.php';
 
 $container['auth'] = function ($container) {
     return new AuthService($container->db);
+};
+
+$container['imageUploadService'] = function () {
+    return new ImageUploadService();
 };
 
 $container['flash'] = function ($container) {
@@ -78,6 +85,9 @@ $container['PostController'] = function ($container) {
 $container['AuthController'] = function ($container) {
     return new AuthController($container);
 };
+$container['AdminController'] = function ($container) {
+    return new AdminController($container);
+};
 
 $container['csrf'] = function ($container) {
     return new \Slim\Csrf\Guard;
@@ -87,6 +97,7 @@ $container['csrf'] = function ($container) {
 $app->add(new ValidationErrorsMiddleware($container));
 $app->add(new OldInputMiddleware($container));
 $app->add(new CsrfMiddleware($container));
+$app->add(new HttpMethodOverrideMiddleware($container));
 
 $app->add($container->csrf);
 
