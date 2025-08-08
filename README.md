@@ -29,6 +29,7 @@ for the purpose of reading the articles.
    ```
 4. Set up database
 - Open database/schema.sql and execute locally
+- In order for the admin panel to be visible, after creating user, set in database table users->admin=1
 5. Start the local server
     ``` bash
     php -S localhost:8000 -t public
