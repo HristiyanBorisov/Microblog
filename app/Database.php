@@ -1,13 +1,20 @@
 <?php
 
-$container['db'] = function () {
-    $pdo = new PDO(
-        'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
-        $_ENV['DB_USER'],
-        $_ENV['DB_PASS']
-    );
+namespace App;
 
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+use PDO;
 
-    return $pdo;
-};
+class Database {
+    public static function connect(): PDO
+    {
+        $pdo = new PDO(
+            'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
+            $_ENV['DB_USER'],
+            $_ENV['DB_PASS']
+        );
+
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        return $pdo;
+    }
+}
