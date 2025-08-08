@@ -1,0 +1,20 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    {% if post is empty %}
+        <div class="alert alert-info">No post found.</div>
+    {% endif %}
+
+    <div class="card h-100">
+        <img src="{{ post.image_path }}" class="card-img-top w-100 h-50" alt="Post">
+
+        <div class="card-body">
+            <h2 class="card-title text-center">{{ post.title }}</h2>
+
+            <p class="card-text">
+                {{ post.content }}
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

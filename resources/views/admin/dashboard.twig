@@ -1,1 +1,41 @@
-Dashboard
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+    <div class="row d-flex justify-content-center mt-3">
+        <a href="{{ path_for('admin.post.create.form') }}" class="btn btn-success w-25">Create new post</a>
+    </div>
+
+    {% if posts is empty %}
+        <div class="alert alert-info">No posts found.</div>
+    {% else %}
+
+        <div class="row mt-4">
+            {% for post in posts %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        {% if post.image_path is defined and post.image_path %}
+                            <img src="{{ post.image_path }}" class="card-img-top mw-100 mh-100" alt="{{ post.title }}">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text text-truncate">{{ post.content|striptags|slice(0, 150) ~ '...'}}</p>
+                            <p class="text-muted mt-auto mb-0-small">
+                                Published on {{ post.created_at|date("Y-m-d") }}
+                            </p>
+                            <a href="{{ path_for('public.show', { 'id': post.id }) }}" class="btn btn-primary mt-2">Read More</a>
+                            <a href="{{ path_for('admin.post.update.form', { 'id': post.id }) }}" class="btn btn-info mt-2">Update</a>
+                            <form action="{{ path_for('admin.post.delete', { 'id': post.id }) }}" method="post" class="mt-2">
+                                <input type="hidden" name="_METHOD" value="DELETE">
+                                <button type="submit" class="btn btn-danger w-100">Delete</button>
+                                {{ csrf.field | raw }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+
+{% endblock %}

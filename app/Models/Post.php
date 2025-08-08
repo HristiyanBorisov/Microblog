@@ -24,47 +24,51 @@ class Post implements ModelInterface
 
     public function find(UuidInterface $id): ?array
     {
-        return $this->db->query('SELECT * FROM posts WHERE id = :id', ['id' => $id])->fetch(PDO::FETCH_ASSOC)[0];
+        $stmt = $this->db->prepare('SELECT * FROM posts WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create(array $data): bool
     {
-        return $this->db->query(
-            'INSERT INTO posts (id, title, content, image_path) 
-                    VALUES (:id, :title, :content, :image_path)
-            ')->execute([
-                'id' => Uuid::uuid4()->toString(),
-                ':title' => $data['title'],
-                ':content' => $data['content'],
-                ':image_path' => $data['image_path'],
-            ]);
+
+        $stmt = $this->db->prepare('INSERT INTO posts (id, title, content, image_path)
+                                            VALUES (:id, :title, :content, :image_path)');
+
+        return $stmt->execute([
+            'id' => Uuid::uuid4()->toString(),
+            ':title' => $data['title'],
+            ':content' => $data['content'],
+            ':image_path' => $data['image_path'],
+        ]);
     }
 
     public function update(UuidInterface $id, array $data): bool
     {
-        return $this->db->query(
-            'UPDATE posts
+        if ($data['image_path']) {
+            $stmt = $this->db->prepare('UPDATE posts
                     SET title = :title, content = :content, image_path = :image_path, updated_at = :updated_at
-                    WHERE id = :id'
-            )->execute(
-                [
-                    ':title' => $data['title'],
-                    ':content' => $data['content'],
-                    ':image_path' => $data['image_path'],
-                    ':updated_at' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'),
-                    ':id' => $id->toString(),
-                ]
-            );
+                    WHERE id = :id');
+            return $stmt->execute([
+                ':title' => $data['title'],
+                ':content' => $data['content'],
+                ':image_path' => $data['image_path'],
+                ':updated_at' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'),
+                ':id' => $id->toString(),
+            ]);
+        }
+        $stmt = $this->db->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updated_at WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':content' => $data['content'],
+            ':updated_at' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'),
+            ':id' => $id->toString(),
+        ]);
     }
 
     public function delete(UuidInterface $id): bool
     {
-        return $this->db->query(
-            'DELETE FROM posts WHERE id = :id'
-        )->execute(
-            [
-                ':id' => $id->toString(),
-            ]
-        );
+        $stmt = $this->db->prepare('DELETE FROM posts WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
     }
 }
